@@ -1,37 +1,478 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-<title>abdullah melhem</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كرتونكم | كرتون ومسلسلات بث مباشر</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap');
+
+  :root{
+    --night: #150f2b;
+    --panel: #1e1740;
+    --panel-line: #37295f;
+    --pink: #ff3d81;
+    --cyan: #2fe6c7;
+    --yellow: #ffd23f;
+    --ink: #f4f1ff;
+    --ink-dim: #b3a8dd;
+    --radius: 16px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background: var(--night);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    overflow-x:hidden;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1.4px);
+    background-size: 18px 18px;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo Bhaijaan 2', sans-serif; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  img,svg{ display:block; }
+  ::selection{ background: var(--pink); color: var(--night); }
+  :focus-visible{ outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+  .wrap{ max-width: 1180px; margin:0 auto; padding: 0 28px; }
+
+  .panel{
+    background: var(--panel);
+    border: 3px solid var(--panel-line);
+    border-radius: var(--radius);
+    position: relative;
+  }
+  .panel::before{
+    content: attr(data-tag);
+    position: absolute; top: -13px; right: 18px; z-index: 2;
+    background: var(--yellow); color: var(--night);
+    font-family: 'Baloo Bhaijaan 2', sans-serif;
+    font-weight: 700; font-size: 12px;
+    padding: 3px 12px; border-radius: 999px;
+    display: none;
+  }
+  .panel[data-tag]::before{ display:block; }
+
+  /* ===== Header ===== */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(21,15,43,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 3px solid var(--panel-line);
+  }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding: 16px 28px; }
+  .logo{ font-size: 26px; font-weight: 800; display:flex; align-items:center; gap:2px; }
+  .logo span{ color: var(--pink); }
+  .navlinks{ display:flex; gap: 30px; font-weight: 500; font-size: 15px; }
+  .navlinks a{ position:relative; padding-bottom:4px; }
+  .navlinks a::after{
+    content:""; position:absolute; right:0; bottom:0; width:0; height:3px; border-radius:2px;
+    background: var(--cyan); transition: width .25s ease;
+  }
+  .navlinks a:hover::after{ width:100%; }
+  .search-btn{
+    display:flex; align-items:center; gap:10px;
+    background: var(--panel); border: 2px solid var(--panel-line);
+    border-radius: 999px; padding: 9px 18px; font-size: 14px; color: var(--ink-dim);
+    cursor:pointer;
+  }
+  .join-btn{
+    background: var(--pink); color: var(--night); font-weight: 700; font-size: 14px;
+    padding: 10px 22px; border-radius: 999px;
+  }
+  .menu-toggle{ display:none; background:none; border:none; color:var(--ink); font-size:22px; cursor:pointer; }
+
+  /* ===== Hero ===== */
+  .hero{ padding: 70px 28px 40px; }
+  .hero-grid{
+    max-width: 1180px; margin:0 auto;
+    display:grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items:stretch;
+  }
+  .hero-main{
+    padding: 46px; display:flex; flex-direction:column; justify-content:flex-end; min-height: 420px;
+    background: linear-gradient(180deg, rgba(21,15,43,0.2) 0%, rgba(21,15,43,0.95) 100%), url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    overflow:hidden; position: relative;
+  }
+  .hero-main::after{
+    content:"★"; position:absolute; top: 24px; left: 30px; font-size: 60px; color: var(--cyan); opacity:.35;
+    transform: rotate(-12deg);
+  }
+  .eyebrow{
+    font-weight:700; color: var(--yellow); font-size: 13px; margin-bottom: 14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:"●"; color: var(--pink); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 50%{ opacity:.25; } }
+  .hero-main h1{ font-size: clamp(32px,4vw,46px); line-height:1.1; margin-bottom:14px; font-weight:800; }
+  .hero-main p{ color: var(--ink-dim); max-width: 420px; margin-bottom: 24px; font-size: 15px; line-height:1.8; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn-play{
+    background: var(--yellow); color: var(--night); font-weight:700; font-size:14px;
+    padding: 13px 26px; border-radius: 999px; display:flex; align-items:center; gap:8px;
+    transition: transform .2s ease;
+  }
+  .btn-play:hover{ transform: translateY(-2px); }
+  .btn-info{
+    border: 2px solid var(--panel-line); font-weight:600; font-size:14px;
+    padding: 12px 22px; border-radius: 999px; transition: border-color .2s; background: rgba(30, 23, 64, 0.6);
+  }
+  .btn-info:hover{ border-color: var(--ink); }
+
+  .hero-side{ display:flex; flex-direction:column; gap: 26px; }
+  .mini-card{
+    flex:1; padding: 26px; display:flex; flex-direction:column; justify-content:flex-end; min-height: 190px;
+    position: relative; overflow:hidden; background-size: cover; background-position: center;
+  }
+  .mini-card.a{ 
+    background-image: linear-gradient(180deg, rgba(21,15,43,0.1) 0%, rgba(21,15,43,0.85) 100%), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'); 
+  }
+  .mini-card.b{ 
+    background-image: linear-gradient(180deg, rgba(21,15,43,0.1) 0%, rgba(21,15,43,0.85) 100%), url('https://images.unsplash.com/photo-1535551951406-a19828b0a76b?q=80&w=600&auto=format&fit=crop'); 
+  }
+  .mini-card h3{ font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .mini-card span{ font-size: 12.5px; opacity:.85; font-weight:600; }
+
+  /* ===== Stats ===== */
+  .stats{ display:flex; gap: 18px; padding: 34px 0; flex-wrap:wrap; max-width:1180px; margin:0 auto; }
+  .bubble{
+    background: var(--panel); border: 2px solid var(--panel-line); border-radius: 999px;
+    padding: 12px 22px; font-size: 13.5px; font-weight:600; display:flex; align-items:center; gap:8px;
+  }
+  .bubble b{ color: var(--cyan); font-family:'Baloo Bhaijaan 2',sans-serif; font-size:16px; }
+
+  /* ===== Section ===== */
+  .section{ padding: 60px 0; }
+  .section-head{
+    display:flex; align-items:flex-end; justify-content:space-between; margin-bottom: 30px; flex-wrap:wrap; gap:12px;
+  }
+  .section-head h2{ font-size: clamp(24px,3vw,32px); font-weight: 800; }
+  .see-all{ font-size: 13.5px; font-weight:600; color: var(--ink-dim); display:flex; align-items:center; gap:6px; }
+  .see-all:hover{ color: var(--pink); }
+
+  .row{ display:flex; gap: 18px; overflow-x:auto; padding-bottom: 10px; scrollbar-width: thin; }
+  .row::-webkit-scrollbar{ height: 6px; }
+  .row::-webkit-scrollbar-thumb{ background: var(--panel-line); border-radius: 3px; }
+
+  .ep-card{
+    min-width: 230px; flex: 0 0 230px; overflow:hidden;
+  }
+  .ep-thumb{
+    height: 130px; position:relative; display:flex; align-items:flex-end; padding: 10px;
+    background-size: cover; background-position: center;
+  }
+  .ep-thumb::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(21,15,43,0.8) 100%);
+  }
+  .ep-thumb .num{
+    position:absolute; top:10px; right:12px; font-family:'Baloo Bhaijaan 2',sans-serif;
+    font-weight:800; font-size: 26px; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); z-index: 2;
+  }
+  .progress{ height: 4px; background: rgba(255,255,255,0.2); border-radius: 3px; width:100%; overflow:hidden; position: relative; z-index: 2; }
+  .progress i{ display:block; height:100%; background: var(--yellow); }
+  .ep-info{ padding: 14px 16px 16px; }
+  .ep-info h4{ font-size: 15px; font-weight:700; margin-bottom: 3px; }
+  .ep-info span{ font-size: 12px; color: var(--ink-dim); }
+
+  .ep1{ background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=400&auto=format&fit=crop'); }
+  .ep2{ background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=400&auto=format&fit=crop'); }
+  .ep3{ background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop'); }
+  .ep4{ background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400&auto=format&fit=crop'); }
+
+  /* Posters */
+  .poster-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+  .poster{
+    aspect-ratio: 2/3; padding: 0; display:flex; flex-direction:column; justify-content:flex-end;
+    position: relative; overflow:hidden; transition: transform .25s ease, border-color .25s ease;
+    background-size: cover; background-position: center;
+  }
+  .poster-img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
+  }
+  .poster-content {
+    position: relative; z-index: 3; padding: 16px; width: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(15,10,30,0.9) 100%);
+  }
+  .poster:hover{ transform: translateY(-6px); border-color: var(--pink); }
+  .poster .age{
+    position:absolute; top:12px; left:12px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    font-size: 11px; font-weight:700; padding: 3px 9px; border-radius:999px; z-index: 4;
+  }
+  .poster h4{ font-weight:800; font-size: 16px; margin-bottom: 3px; }
+  .poster span{ font-size: 11.5px; color: var(--ink-dim); }
+
+  .p1{ background-image: url('https://images.unsplash.com/photo-1535551951406-a19828b0a76b?q=80&w=400&auto=format&fit=crop'); }
+  .p2{ background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400&auto=format&fit=crop'); }
+  .p3{ background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=400&auto=format&fit=crop'); }
+  .p4{ background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop'); }
+  .p5{ background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=400&auto=format&fit=crop'); }
+  .p6{ background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&auto=format&fit=crop'); }
+  .p7{ background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400&auto=format&fit=crop'); }
+  .p8{ background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop'); }
+
+  /* Chips */
+  .chips{ display:flex; flex-wrap:wrap; gap: 12px; }
+  .chip{
+    padding: 10px 20px; border-radius: 999px; border: 2px solid var(--panel-line); font-weight:600; font-size:14px;
+    transition: all .2s ease; cursor:pointer; background: var(--panel);
+  }
+  .chip:hover, .chip.active{ background: var(--cyan); color: var(--night); border-color: var(--cyan); }
+
+  /* CTA */
+  .cta{
+    background: linear-gradient(120deg, rgba(255,61,129,0.9), rgba(124,43,255,0.9)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    border-radius: 22px; padding: 56px 46px;
+    display:flex; align-items:center; justify-content:space-between; gap: 26px; flex-wrap:wrap;
+  }
+  .cta h3{ font-size: clamp(24px,3.4vw,34px); font-weight:800; max-width: 460px; line-height:1.2; }
+  .cta p{ font-size: 14px; opacity:.9; margin-top:8px; }
+  .cta form{ display:flex; gap:10px; flex-wrap:wrap; }
+  .cta input{
+    border:none; border-radius:999px; padding: 14px 20px; font-size:14px; width:230px;
+    font-family:'IBM Plex Sans Arabic',sans-serif;
+  }
+  .cta button{
+    background: var(--night); color: var(--ink); border:none; border-radius:999px; padding: 14px 26px;
+    font-weight:700; font-size:14px; cursor:pointer;
+  }
+
+  /* Footer */
+  footer{ padding: 60px 0 28px; }
+  .foot-grid{
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px;
+    padding-bottom: 34px; border-bottom: 2px solid var(--panel-line);
+  }
+  .foot-grid h5{ font-size: 13px; margin-bottom: 14px; color: var(--ink-dim); }
+  .foot-grid li{ margin-bottom: 9px; font-size: 14px; }
+  .foot-grid li a:hover{ color: var(--pink); }
+  .foot-bottom{
+    display:flex; justify-content:space-between; padding-top: 22px; font-size: 12px; color: var(--ink-dim);
+    flex-wrap:wrap; gap:10px;
+  }
+
+  @media (max-width: 900px){
+    .navlinks{ display:none; }
+    .menu-toggle{ display:block; }
+    .hero-grid{ grid-template-columns: 1fr; }
+    .poster-grid{ grid-template-columns: repeat(2,1fr); }
+    .foot-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px){
+    .poster-grid{ grid-template-columns: repeat(2,1fr); gap:12px; }
+    .cta{ padding: 34px 22px; }
+    .foot-grid{ grid-template-columns: 1fr; }
+  }
+</style>
 </head>
+<body>
 
-<body style="background-color:#3e2723;">
+  <header>
+    <nav class="wrap" style="padding-inline:0;">
+      <div class="logo">كرتون<span>كم</span></div>
+      <ul class="navlinks">
+        <li><a href="#cartoons">كرتون</a></li>
+        <li><a href="#series">مسلسلات</a></li>
+        <li><a href="#continue">أكمل المشاهدة</a></li>
+        <li><a href="#categories">التصنيفات</a></li>
+      </ul>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="search-btn">🔍 ابحث عن حلقة...</div>
+        <a href="#join" class="join-btn">اشترك الآن</a>
+        <button class="menu-toggle" aria-label="القائمة">☰</button>
+      </div>
+    </nav>
+  </header>
 
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="panel hero-main" data-tag="يُعرض الآن">
+        <div class="eyebrow">الحلقة الجديدة كل خميس</div>
+        <h1>مغامرات فريق النجوم<br>الموسم الثالث</h1>
+        <p>عصابة من خمسة أصدقاء تكتشف بوابة سرية بين الأحياء، وتخوض مغامرة جديدة كل حلقة قبل جرس المدرسة.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-play">▶ شاهد الحلقة الأولى</a>
+          <a href="#" class="btn-info">تفاصيل المسلسل</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="panel mini-card a" data-tag="حصريًا">
+          <h3>عائلة الحيّ الكبير</h3>
+          <span>مسلسل كوميدي عائلي · موسم ٢</span>
+        </div>
+        <div class="panel mini-card b" data-tag="للصغار">
+          <h3>أصدقاء الغابة</h3>
+          <span>كرتون تعليمي · حلقات ١١ دقيقة</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <div class="wrap stats">
+    <div class="bubble"><b>+٤٠٠</b> ساعة كرتون</div>
+    <div class="bubble"><b>+٦٠</b> مسلسل عائلي</div>
+    <div class="bubble"><b>بدون إعلانات</b> أثناء الحلقة</div>
+    <div class="bubble"><b>تنزيل</b> للمشاهدة بدون نت</div>
+  </div>
 
+  <section class="section" id="continue">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>أكمل من حيث توقفت</h2>
+        <a href="#" class="see-all">عرض الكل ←</a>
+      </div>
+      <div class="row">
+        <div class="panel ep-card">
+          <div class="ep-thumb ep1"><span class="num">٠٧</span></div>
+          <div class="ep-info">
+            <h4>مغامرات فريق النجوم</h4>
+            <span>الحلقة ٧ · تبقّى ٦ د</span>
+            <div class="progress" style="margin-top:8px;"><i style="width:70%"></i></div>
+          </div>
+        </div>
+        <div class="panel ep-card">
+          <div class="ep-thumb ep2"><span class="num">١٢</span></div>
+          <div class="ep-info">
+            <h4>أصدقاء الغابة</h4>
+            <span>الحلقة ١٢ · تبقّى ٣ د</span>
+            <div class="progress" style="margin-top:8px;"><i style="width:40%"></i></div>
+          </div>
+        </div>
+        <div class="panel ep-card">
+          <div class="ep-thumb ep3"><span class="num">٠٣</span></div>
+          <div class="ep-info">
+            <h4>عائلة الحيّ الكبير</h4>
+            <span>الحلقة ٣ · تبقّى ١٥ د</span>
+            <div class="progress" style="margin-top:8px;"><i style="width:20%"></i></div>
+          </div>
+        </div>
+        <div class="panel ep-card">
+          <div class="ep-thumb ep4"><span class="num">٠٥</span></div>
+          <div class="ep-info">
+            <h4>مدرسة الأبطال الصغار</h4>
+            <span>الحلقة ٥ · تبقّى ٩ د</span>
+            <div class="progress" style="margin-top:8px;"><i style="width:55%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<img src="1.jpeg" style="width:1000px; display:block; margin:auto;">
-<h2 style="text-align:center; direction:rtl; color:white; font-size:70px;">
-البؤساء
-</h2>
-  <p style="font-size:30px;"><bra>
-    تتحوَل حياة (كوزيت) السعيدة مع أمها في مدينة باريس
-    إلى حياة بائسة عند عائلة تيناردييه الجشعة، بعد موت أمها،
-    بينما يعيش عمدة البلدة حياة رجل فاضل وخيّر في نفس البلدة التي 
-    عاش فيها والد الفتاة، لكنه يخفي وجهًا أكثر بشاعة من العائلة المنافقة.</bra></p>
-<p><a href="index.html" style="color:yellow;" >الحلقة الأولى</a></p>
-<p><a href="page1.html" style="color:yellow;" >الحلقة الثانية</a></p>
-<p><a href="page2.html" style="color:yellow;">الحلقة الثالثة</a></p>
+  <section class="section" id="cartoons">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>كرتون للأطفال</h2>
+        <a href="#" class="see-all">عرض الكل ←</a>
+      </div>
+      <div class="poster-grid">
+        <div class="panel poster p1"><span class="age">+٣</span><div class="poster-content"><h4>أصدقاء الغابة</h4><span>موسم ١ · ٢٦ حلقة</span></div></div>
+        <div class="panel poster p2"><span class="age">+٦</span><div class="poster-content"><h4>مدرسة الأبطال الصغار</h4><span>موسم ٢ · ١٨ حلقة</span></div></div>
+        <div class="panel poster p3"><span class="age">+٤</span><div class="poster-content"><h4>سفينة الأحلام</h4><span>موسم ١ · ١٢ حلقة</span></div></div>
+        <div class="panel poster p4"><span class="age">+٥</span><div class="poster-content"><h4>نور والقمر الصغير</h4><span>موسم ١ · ٢٠ حلقة</span></div></div>
+        <div class="panel poster p5"><span class="age">+٦</span><div class="poster-content"><h4>سبونج بوب</h4><span>موسم ٤ · ٢٦ حلقة</span></div></div>
+        <div class="panel poster p6"><span class="age">+٧</span><div class="poster-content"><h4>أبطال الكرة</h4><span>موسم ١ · ٣٠ حلقة</span></div></div>
+      </div>
+    </div>
+  </section>
 
-  
-<p><b>hhhhgghello</b></p>
-<a href="https://google.com" style="color:blueviolet;font-size:40px;display: block;">Go to Google</a>
-<a href="https://google.com" title="Search engine">
-Google
-</a>
-<div style="text-align: center;">
-<iframe src="https://drive.google.com/file/d/1KwJzXC7vgncJl2VP2O3j7Fwg5HETkVmq/preview" width="800" height="400 allow="fullscreen"></iframe>
-</div>
-<p style="font-family:courier;">This is a paragraph.</p>
+  <section class="section" id="series">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>مسلسلات عائلية</h2>
+        <a href="#" class="see-all">عرض الكل ←</a>
+      </div>
+      <div class="poster-grid">
+        <div class="panel poster p7"><span class="age">عائلي</span><div class="poster-content"><h4>عائلة الحيّ الكبير</h4><span>موسم ٢ · ١٦ حلقة</span></div></div>
+        <div class="panel poster p6"><span class="age">عائلي</span><div class="poster-content"><h4>مغامرات فريق النجوم</h4><span>موسم ٣ · ٢٤ حلقة</span></div></div>
+        <div class="panel poster p8"><span class="age">درامي خفيف</span><div class="poster-content"><h4>بيت العائلة</h4><span>موسم ١ · ١٠ حلقة</span></div></div>
+        <div class="panel poster p3"><span class="age">كوميدي</span><div class="poster-content"><h4>سوق الحكايات</h4><span>موسم ١ · ١٤ حلقة</span></div></div>
+        <div class="panel poster p2"><span class="age">أكشن</span><div class="poster-content"><h4>باتمان</h4><span>موسم ١ · ٢٢ حلقة</span></div></div>
+        
+        <!-- بوستر البؤساء المحدث بالصورة المباشرة -->
+        <div class="panel poster">
+          <span class="age">درامي</span>
+          <img class="poster-img" src="a1.jpg" alt="البؤساء: الفتاة كوزيت">
+          <div class="poster-content">
+            <h4>البؤساء: الفتاة كوزيت</h4>
+            <span>موسم ١ · ٥٢ حلقة</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="categories">
+    <div class="wrap">
+      <div class="section-head"><h2>تصفح حسب التصنيف</h2></div>
+      <div class="chips">
+        <span class="chip active">الكل</span>
+        <span class="chip">كوميدي</span>
+        <span class="chip">مغامرات</span>
+        <span class="chip">تعليمي</span>
+        <span class="chip">عائلي</span>
+        <span class="chip">أكشن</span>
+        <span class="chip">موسيقي</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="join">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h3>اشترك الآن وشاهد الحلقة الجديدة أول بأول</h3>
+          <p>بدون إعلانات، مع تحميل للمشاهدة بدون إنترنت.</p>
+        </div>
+        <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='تم الاشتراك ✓';">
+          <input type="email" placeholder="بريدك الإلكتروني" required>
+          <button type="submit">اشترك</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div class="logo" style="margin-bottom:14px;">كرتون<span>كم</span></div>
+          <p style="color:var(--ink-dim); font-size:13.5px; line-height:1.8; max-width:280px;">منصة عربية لبث الكرتون والمسلسلات العائلية، بدون إعلانات وبجودة عالية.</p>
+        </div>
+        <div>
+          <h5>المحتوى</h5>
+          <ul>
+            <li><a href="#cartoons">كرتون الأطفال</a></li>
+            <li><a href="#series">مسلسلات عائلية</a></li>
+            <li><a href="#categories">التصنيفات</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>الحساب</h5>
+          <ul>
+            <li><a href="#">إدارة الاشتراك</a></li>
+            <li><a href="#">أجهزة متصلة</a></li>
+            <li><a href="#">الرقابة الأبوية</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>الدعم</h5>
+          <ul>
+            <li><a href="#">مركز المساعدة</a></li>
+            <li><a href="#">تواصل معنا</a></li>
+            <li><a href="#">الأسئلة الشائعة</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© ٢٠٢٦ كرتونكم. جميع الحقوق محفوظة.</span>
+        <span>صُنع بحب للصغار والكبار</span>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
